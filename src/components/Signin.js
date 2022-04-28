@@ -21,7 +21,7 @@ const Signin = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    authStore.login(user);
+    authStore.signin(user);
     // handleClose();
   };
 

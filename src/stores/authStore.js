@@ -10,7 +10,6 @@ class AuthStore {
   user = null;
 
   // * signup method:
-
   signup = async (userData, navigate) => {
     const body = JSON.stringify({ userData });
     try {
@@ -20,25 +19,15 @@ class AuthStore {
       console.log(error.response);
     }
   };
+
   // * signin method:
-  //   signin = async (userData, navigation) => {
-  //     try {
-  //       const res = await instance.post("/api/login/", userData);
-  //       const { token } = res.data;
-  //       this.user = decode(token);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-  login = async (userData, navigate) => {
+  signin = async (userData) => {
     try {
-      const res = await instance.post("/api/jwt/create/", userData);
-      this.setUser(res.data.access);
-      const res2 = await instance.get("/api/users/me/");
-      this.user = res2.data;
-      navigate("/");
+      const res = await instance.post("/api/login/", userData);
+      const { token } = res.data;
+      this.user = decode(token);
     } catch (error) {
-      console.log({ error });
+      console.log(error);
     }
   };
 
@@ -51,11 +40,13 @@ class AuthStore {
       await localStorage.removeItem("token");
     }
   };
+
   // * set user method:
   setUser = (token) => {
     instance.defaults.headers.common.Authorization = `Bearer ${token}`;
     localStorage.setItem("token", token);
   };
+
   // * Check for Token method:
   checkForToken = async () => {
     const token = await localStorage.getItem("myToken");
